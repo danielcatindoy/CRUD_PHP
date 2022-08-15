@@ -1,4 +1,4 @@
-# -------------------- CRUD_PHP App installation -------------------- #
+# ---------------- CRUD_PHP App installation ---------------- #
 
 # Open your xampp, activate mysql and apache and go to localhost/phpmyadmin
 # add new database named "simpleapp"
