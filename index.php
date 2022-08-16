@@ -1,10 +1,3 @@
-<?php
-
-    // include("db/connection.php");
-
-?>
-
-
 <!DOCTYPE HTML>
 <html lang="en">
 

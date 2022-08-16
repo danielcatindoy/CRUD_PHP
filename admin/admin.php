@@ -3,6 +3,44 @@
     //let's import the database connection here...
     require("../db/connection.php");
 
+    //when button activate is clicked
+    if(isset($_POST["btnActivate"])){
+
+        //getting the user id
+        $userID = $_POST["btnActivate"];
+
+        //create a query for activating the user
+        $activateQuery = mysqli_query($db, "UPDATE users SET is_active = 1 WHERE user_id = '".$userID."'; ");
+
+        //perform a query, check for error
+        if (!$activateQuery) 
+            echo("Error description: " . mysqli_error($db));
+
+        //when activation is successfull then display a message
+        if($activateQuery){
+            echo "<script>alert('User has been successfully activated.');</script>";
+        }
+    }
+
+    //when button deactivate is clicked
+    if(isset($_POST["btnDeactivate"])){
+
+        //getting the user id
+        $userID = $_POST["btnDeactivate"];
+
+        //create a query for activating the user
+        $activateQuery = mysqli_query($db, "UPDATE users SET is_active = 0 WHERE user_id = '".$userID."'; ");
+
+        //perform a query, check for error
+        if (!$activateQuery) 
+            echo("Error description: " . mysqli_error($db));
+
+        //when activation is successfull then display a message
+        if($activateQuery){
+            echo "<script>alert('User has been deactivated.');</script>";
+        }
+    }
+
 ?>
 
 
@@ -69,21 +107,27 @@
                                 $usersQuery = mysqli_query($db, "SELECT * FROM users WHERE role <> 99");
                                 while($data = mysqli_fetch_assoc($usersQuery)){
                                     //if role is 99 then display Admin else Client
-                                    $role = $data['role'] == 99 ? "Admin" : "Client";
+                                    $role = $data['role'] == 99 ? "Admin" : "Client"; //displaying role for role
+                                    $status = $data['is_active'] == 1 ? "Activated" : "Deactivated"; //displaying text for status
+                                    $color = $data['is_active'] == 1 ? "green" : "red"; //dislaying color for the role
+                                    $disabledActivate = $data['is_active'] == 1 ? "disabled" : ""; //disable activate button
+                                    $disabledDeactivate = $data['is_active'] == 1 ? "" : "disabled"; //disable deactivate button
 
                                     echo '
                                         <tr>
                                             <td>'.$data['name'].'</td>
                                             <td>'.$data['email'].'</td>
                                             <td>'.$role.'</td>
-                                            <td><span style="">Activated</span></td>
+                                            <td><span style="color: '.$color.'; font-weight: bold;">'.$status.'</span></td>
                                             <td>
-                                                <a class="btn btn-primary" href="#" data-toggle="tooltip" data-placement="top" title="Activate">
-                                                    <img src="/public/img/reset.svg" height="20px" />
-                                                </a>
-                                                <a class="btn btn-danger" href="#" data-toggle="tooltip" data-placement="top" title="Deactivate">
-                                                    <img src="/public/img/lock.svg" height="20px" />
-                                                </a>
+                                                <form action="" method="POST">
+                                                    <button class="btn btn-primary" type="submit" name="btnActivate" value="'.$data['user_id'].'" '.$disabledActivate.' data-toggle="tooltip" data-placement="top" title="Activate">
+                                                        <img src="/public/img/reset.svg" height="20px" />
+                                                    </button>
+                                                    <button class="btn btn-danger" type="submit" name="btnDeactivate" value="'.$data['user_id'].'" '.$disabledDeactivate.' data-toggle="tooltip" data-placement="top" title="Deactivate">
+                                                        <img src="/public/img/lock.svg" height="20px" />
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     ';

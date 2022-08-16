@@ -11,8 +11,10 @@
     if(isset($_POST['btnLogin'])){
 
         //get input from our form
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+        //note: mysqli_real_escape_string() is simply use 
+        //for escaping special characters which will be used for SQL injection ...
+        $email = mysqli_real_escape_string($db, $_POST['email']);
+        $password = mysqli_real_escape_string($db, $_POST['password']);
         
         //if email is empty
         if($email == ""){
